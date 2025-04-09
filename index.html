@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дмитрий Малышев - Разработчик</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="avatar-container">
+                <img src="" alt="Аватар" class="avatar" id="avatar">
+            </div>
+            <h1 id="name"></h1>
+            <p class="description" id="description"></p>
+            
+            <div class="buttons">
+                <a href="https://t.me/developer_telegrams" class="btn primary" id="telegramBtn">Написать в Telegram</a>
+                <a href="https://mao13132.github.io/js_web_app/" class="btn free-btn" id="freeVisitsBtn"><span>Визитки БЕСПЛАТНО</span></a>
+                <a href="https://dima-razrab.ru/#portfolio" class="btn secondary" id="giftBtn">Примеры работ</a>
+                <a href="https://dima-razrab.ru&utm_source=telegram&utm_medium=referral&utm_campaign=portfolio" class="btn tertiary" id="resumeBtn">Портфолио</a>
+            </div>
+
+            <div class="skills-container">
+                <h2>Навыки</h2>
+                <div class="skills-grid" id="skillsGrid"></div>
+            </div>
+
+            <div class="social-links" id="socialLinks"></div>
+            
+            <button class="theme-toggle" id="themeToggle">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html> 
