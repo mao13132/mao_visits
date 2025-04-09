@@ -103,20 +103,37 @@ async function trackVisit(action) {
             has_telegram_data: !!user
         };
 
-        await fetch('https://dima-razrab.ru/visits', {
+        console.log('Отправка данных:', visitData);
+
+        const response = await fetch('https://dima-razrab.ru/visits', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(visitData)
         });
+
+        console.log('Статус ответа:', response.status);
+        const responseData = await response.json();
+        console.log('Ответ сервера:', responseData);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
     } catch (error) {
-        console.error('Error tracking visit:', error);
+        console.error('Ошибка при отправке данных:', error);
+        console.error('Детали ошибки:', {
+            message: error.message,
+            stack: error.stack
+        });
     }
 }
 
 // Обработка Telegram Web App
 function initTelegram() {
+    console.log('Инициализация Telegram Web App');
+    console.log('Данные пользователя:', tg.initDataUnsafe.user);
+    
     if (tg.initDataUnsafe.user) {
         const user = tg.initDataUnsafe.user;
         const greeting = `Привет, ${user.first_name}!`;
@@ -132,6 +149,7 @@ function initTelegram() {
     }
     
     elements.telegramBtn.addEventListener('click', () => {
+        console.log('Клик по кнопке Telegram');
         trackVisit('Пользователь нажал "Написать в Telegram"');
         tg.close();
     });
