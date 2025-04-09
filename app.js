@@ -99,7 +99,7 @@ async function trackVisit(action) {
             has_telegram_data: !!user
         };
 
-        await fetch('http://127.0.0.1:8000/visits', {
+        await fetch('https://dima-razrab.ru/visits', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
