@@ -6,8 +6,6 @@ const clientData = {
     socialLinks: [
         { name: "telegram", url: "https://t.me/developer_telegrams", icon: "🤖" },
     ],
-    resumeUrl: "#",
-    giftUrl: "#",
     skills: [
         "Telegram боты",
         "Маркетплейсы",
@@ -31,10 +29,9 @@ const elements = {
     avatar: document.getElementById('avatar'),
     socialLinks: document.getElementById('socialLinks'),
     telegramBtn: document.getElementById('telegramBtn'),
-    giftBtn: document.getElementById('giftBtn'),
-    resumeBtn: document.getElementById('resumeBtn'),
     themeToggle: document.getElementById('themeToggle'),
-    skillsGrid: document.getElementById('skillsGrid')
+    skillsGrid: document.getElementById('skillsGrid'),
+    telegramGreeting: document.getElementById('telegramGreeting')
 };
 
 // Функция для установки данных в DOM
@@ -60,10 +57,6 @@ function setData() {
         div.textContent = skill;
         elements.skillsGrid.appendChild(div);
     });
-
-    // Установка ссылок для кнопок
-    elements.resumeBtn.href = clientData.resumeUrl;
-    elements.giftBtn.href = clientData.giftUrl;
 }
 
 // Обработка темы
@@ -91,14 +84,12 @@ function updateThemeIcon(theme) {
 function initTelegram() {
     if (tg.initDataUnsafe.user) {
         const user = tg.initDataUnsafe.user;
-        // Добавляем приветствие с именем пользователя
         const greeting = `Привет, ${user.first_name}!`;
-        elements.telegramBtn.textContent = greeting;
+        elements.telegramGreeting.textContent = greeting;
+        elements.telegramGreeting.classList.add('visible');
         
-        // Можно также использовать username для персонализации
         if (user.username) {
             console.log(`Username пользователя: @${user.username}`);
-            // Можно сохранить username для дальнейшего использования
             localStorage.setItem('tg_username', user.username);
         }
     }
