@@ -91,7 +91,16 @@ function updateThemeIcon(theme) {
 function initTelegram() {
     if (tg.initDataUnsafe.user) {
         const user = tg.initDataUnsafe.user;
-        elements.telegramBtn.textContent = `Привет, ${user.first_name}!`;
+        // Добавляем приветствие с именем пользователя
+        const greeting = `Привет, ${user.first_name}!`;
+        elements.telegramBtn.textContent = greeting;
+        
+        // Можно также использовать username для персонализации
+        if (user.username) {
+            console.log(`Username пользователя: @${user.username}`);
+            // Можно сохранить username для дальнейшего использования
+            localStorage.setItem('tg_username', user.username);
+        }
     }
     
     elements.telegramBtn.addEventListener('click', () => {
