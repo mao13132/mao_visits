@@ -85,8 +85,7 @@ function initTelegram() {
     if (tg.initDataUnsafe.user) {
         const user = tg.initDataUnsafe.user;
         const greeting = `Привет, ${user.first_name}!`;
-        elements.telegramGreeting.textContent = greeting;
-        elements.telegramGreeting.classList.add('visible');
+        elements.telegramBtn.textContent = greeting;
         
         if (user.username) {
             console.log(`Username пользователя: @${user.username}`);

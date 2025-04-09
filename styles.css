@@ -269,20 +269,4 @@ h1 {
 .free-btn:hover {
     box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
     transform: translateY(-2px) scale(1.02);
-}
-
-.telegram-greeting {
-    text-align: center;
-    margin-bottom: 10px;
-    font-size: 16px;
-    color: var(--primary-color);
-    font-weight: 600;
-    opacity: 0;
-    transform: translateY(-10px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.telegram-greeting.visible {
-    opacity: 1;
-    transform: translateY(0);
 } 
