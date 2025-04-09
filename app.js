@@ -47,6 +47,9 @@ function setData() {
         a.className = 'social-link';
         a.innerHTML = link.icon;
         a.target = '_blank';
+        a.addEventListener('click', () => {
+            trackVisit(`Пользователь перешел в ${link.name}`);
+        });
         elements.socialLinks.appendChild(a);
     });
 
@@ -76,6 +79,7 @@ function toggleTheme() {
     document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
     updateThemeIcon(newTheme);
+    trackVisit(`Пользователь сменил тему на ${newTheme}`);
 }
 
 function updateThemeIcon(theme) {
@@ -140,6 +144,14 @@ function init() {
     initTelegram();
     
     elements.themeToggle.addEventListener('click', toggleTheme);
+
+    // Отслеживание кликов по кнопкам
+    document.querySelectorAll('.btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const btnText = btn.textContent.trim();
+            trackVisit(`Пользователь нажал кнопку: ${btnText}`);
+        });
+    });
 }
 
 // Запуск приложения
