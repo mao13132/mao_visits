@@ -55,6 +55,9 @@ function setData() {
         const div = document.createElement('div');
         div.className = 'skill-item';
         div.textContent = skill;
+        div.addEventListener('click', () => {
+            trackVisit(`Пользователь заинтересовался навыком: ${skill}`);
+        });
         elements.skillsGrid.appendChild(div);
     });
 }
@@ -80,6 +83,34 @@ function updateThemeIcon(theme) {
     icon.textContent = theme === 'light' ? '🌙' : '☀️';
 }
 
+// Функция для отправки данных о посещении
+async function trackVisit(action) {
+    try {
+        const user = tg.initDataUnsafe.user;
+        const visitData = {
+            user_id: user?.id || 'не указан',
+            username: user?.username ? `@${user.username}` : 'не указан',
+            first_name: user?.first_name || 'не указано',
+            last_name: user?.last_name || 'не указано',
+            source: "telegram_webapp",
+            action: action,
+            timestamp: new Date().toISOString(),
+            platform: user ? 'Telegram' : 'Веб-браузер',
+            has_telegram_data: !!user
+        };
+
+        await fetch('http://127.0.0.1:8000/visits', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(visitData)
+        });
+    } catch (error) {
+        console.error('Error tracking visit:', error);
+    }
+}
+
 // Обработка Telegram Web App
 function initTelegram() {
     if (tg.initDataUnsafe.user) {
@@ -91,9 +122,13 @@ function initTelegram() {
             console.log(`Username пользователя: @${user.username}`);
             localStorage.setItem('tg_username', user.username);
         }
+
+        // Отправляем данные о первом посещении
+        trackVisit('Пользователь открыл визитку');
     }
     
     elements.telegramBtn.addEventListener('click', () => {
+        trackVisit('Пользователь нажал "Написать в Telegram"');
         tg.close();
     });
 }
