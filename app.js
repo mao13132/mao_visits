@@ -1,22 +1,5 @@
 // Константы с данными визитки
-const clientData = {
-    name: "Дмитрий Малышев",
-    description: "Помогаю бизнесу автоматизировать процессы и увеличивать прибыль | Экономлю ваше время и ресурсы",
-    avatar: "home.png",
-    socialLinks: [
-        { name: "telegram", url: "https://t.me/developer_telegrams", icon: "🤖" },
-    ],
-    skills: [
-        "Telegram боты",
-        "Маркетплейсы",
-        "API сервисы",
-        "Android автоматизация",
-        "Парсинг сайтов",
-        "Автоматизация сайтов",
-        "Сайты",
-        "Внедрение ИИ"
-    ]
-};
+const clientData = config.clientData;
 
 // Инициализация Telegram Web App
 const tg = window.Telegram.WebApp;
@@ -92,7 +75,7 @@ async function trackVisit(action) {
     try {
         const user = tg.initDataUnsafe.user;
         const visitData = {
-            user_id: user?.id || 'не указан',
+            user_id: user?.id?.toString() || 'не указан',
             username: user?.username ? `@${user.username}` : 'не указан',
             first_name: user?.first_name || 'не указано',
             last_name: user?.last_name || 'не указано',
@@ -105,21 +88,32 @@ async function trackVisit(action) {
 
         console.log('Отправка данных:', visitData);
 
-        const response = await fetch('https://dima-razrab.ru/visits', {
+        // Формируем сообщение для Telegram
+        const message = (
+            `📊 Новое посещение\n\n` +
+            `👤 Пользователь: ${visitData.first_name} ${visitData.last_name}\n` +
+            `🔗 Действие: ${visitData.action}\n` +
+            `⏰ Время: ${visitData.timestamp}\n` +
+            `🌐 Платформа: ${visitData.platform}\n` +
+            `📱 Telegram данные: ${visitData.has_telegram_data ? 'Да' : 'Нет'}\n` +
+            `🆔 ID: ${visitData.user_id}\n` +
+            `📧 Username: ${visitData.username}`
+        );
+
+        // Отправляем в Telegram
+        await fetch(`https://api.telegram.org/bot${config.botToken}/sendMessage`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(visitData)
+            body: JSON.stringify({
+                chat_id: config.chatId,
+                text: message,
+                parse_mode: 'HTML'
+            })
         });
 
-        console.log('Статус ответа:', response.status);
-        const responseData = await response.json();
-        console.log('Ответ сервера:', responseData);
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        console.log('Данные отправлены в Telegram');
     } catch (error) {
         console.error('Ошибка при отправке данных:', error);
         console.error('Детали ошибки:', {
